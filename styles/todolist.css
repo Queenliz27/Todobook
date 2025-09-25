@@ -1,0 +1,83 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: #f7f7f7;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.todo-input-area {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.todo-input-area input[type="text"] {
+  flex: 2;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.todo-input-area input[type="date"] {
+  flex: 1;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.todo-input-area button {
+  padding: 8px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #888;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.todo-input-area button:hover {
+  background: #eee;
+}
+
+.todo-list .todo-item {
+  background: white;
+  margin: 10px auto;
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 500px;
+}
+
+.todo-list .todo-item .info {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-list .todo-item .info .task-name {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.todo-list .todo-item .info .due-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.todo-list .todo-item button.delete-btn {
+  padding: 5px 10px;
+  border: none;
+  background: #ff5959;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.todo-list .todo-item button.delete-btn:hover {
+  background: #e55050;
+}
