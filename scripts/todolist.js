@@ -1,12 +1,11 @@
-// Array to store todos (each with name + date)
+// Array to store todos (each with name + due datetime)
 const todos = [];
 
-// On load, set up event listener
+// On load
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector('.js-add-button');
   addBtn.addEventListener('click', addTodo);
 
-  // Also allow pressing Enter in the text input to add
   const textInput = document.querySelector('.js-todo-text');
   textInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
@@ -14,19 +13,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Run a check every 1 second
+  setInterval(checkExpiredTodos, 1000);
+
   renderTodos();
 });
 
 function renderTodos() {
   const container = document.querySelector('.js-todo-list');
-  container.innerHTML = '';  // clear existing
+  container.innerHTML = '';
 
-  // For each todo, build an element
   todos.forEach((todo, index) => {
     const item = document.createElement('div');
     item.className = 'todo-item';
 
-    // Info block
     const info = document.createElement('div');
     info.className = 'info';
 
@@ -37,8 +37,8 @@ function renderTodos() {
     const dateEl = document.createElement('div');
     dateEl.className = 'due-date';
     if (todo.date) {
-      // Format date (YYYY-MM-DD) or any nicer format
-      dateEl.textContent = `Due: ${todo.date}`;
+      const dt = new Date(todo.date);
+      dateEl.textContent = `Due: ${dt.toLocaleString()}`;
     } else {
       dateEl.textContent = 'No due date';
     }
@@ -50,9 +50,15 @@ function renderTodos() {
     const delBtn = document.createElement('button');
     delBtn.className = 'delete-btn';
     delBtn.textContent = 'Delete';
-    delBtn.addEventListener('click', () => {
-      deleteTodo(index);
-    });
+    delBtn.addEventListener('click', () => deleteTodo(index));
+
+    // If expired, strike through and disable button
+    if (todo.expired) {
+      nameEl.style.textDecoration = "line-through";
+      delBtn.disabled = true;
+      delBtn.style.opacity = "0.5";
+      delBtn.style.cursor = "not-allowed";
+    }
 
     item.appendChild(info);
     item.appendChild(delBtn);
@@ -66,20 +72,16 @@ function addTodo() {
   const dateInput = document.querySelector('.js-todo-date');
 
   const name = textInput.value.trim();
-  const date = dateInput.value;  // string in format YYYY-MM-DD
+  const date = dateInput.value; // YYYY-MM-DDTHH:mm
 
-  if (!name) {
-    // don’t add empty names
-    return;
-  }
+  if (!name) return;
 
-  // Push new todo object
   todos.push({
     name: name,
-    date: date
+    date: date,
+    expired: false
   });
 
-  // Clear inputs
   textInput.value = '';
   dateInput.value = '';
 
@@ -88,5 +90,20 @@ function addTodo() {
 
 function deleteTodo(index) {
   todos.splice(index, 1);
+  renderTodos();
+}
+
+function checkExpiredTodos() {
+  const now = new Date();
+
+  todos.forEach(todo => {
+    if (todo.date && !todo.expired) {
+      const dueDate = new Date(todo.date);
+      if (now >= dueDate) {
+        todo.expired = true;
+      }
+    }
+  });
+
   renderTodos();
 }
