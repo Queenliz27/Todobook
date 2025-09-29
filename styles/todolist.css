@@ -81,3 +81,10 @@ header {
 .todo-list .todo-item button.delete-btn:hover {
   background: #e55050;
 }
+
+
+
+.todo-list .todo-item button.delete-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
